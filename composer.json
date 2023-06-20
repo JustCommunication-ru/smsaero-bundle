@@ -1,7 +1,6 @@
 {
     "name": "justcommunication/smsaero-bundle",
     "description": "SmsAero bundle",
-    "version": "0.1.0",
     "type": "symfony-bundle",
     "keywords": ["sms","smsaero"],
     "license": "proprietary",
