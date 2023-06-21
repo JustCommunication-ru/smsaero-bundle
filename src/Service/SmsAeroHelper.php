@@ -5,7 +5,6 @@ namespace JustCommunication\SmsAeroBundle\Service;
 use JustCommunication\FuncBundle\Service\FuncHelper;
 use JustCommunication\SmsAeroBundle\Event\SmsAeroEvent;
 use JustCommunication\SmsAeroBundle\Repository\LogSmsRepository;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -36,12 +35,11 @@ class SmsAeroHelper
 
 
     public function __construct(ParameterBagInterface $params,
-                                RedisHelper $redisHelper, LoggerInterface $logger,
+                                RedisHelper $redisHelper,
                                 LogSmsRepository $logSmsRepository, EventDispatcherInterface $eventDispatcher)
     {
         $this->config = $params->get("smsaero");
         $this->redis = $redisHelper->getClient();
-        $this->logger = $logger;
         $this->logSmsRepository = $logSmsRepository;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -58,22 +56,20 @@ class SmsAeroHelper
      * Отправка сообщений
      * @param $phone - полный номер телефона (может начинаться с +7... , 7..., 8...)
      * @param $text - текст сообщения (одна смс - 70кириллицей)
-     * @param string $action - действие (для сбора статистики)
+     * @param string $action - действие в проекте (для сбора статистики)
      * @param string $code - если смс для передачи кода, то указать дополнительно сюда (для статистики)
-     * @param int $id_users - пользователь которому предназначается смс
-     * @param int $try - попытка (если не первая)
-     * @param string $ip - ip для того, кому отправляется сообщение
+     * @param int $id_users - пользователь которому предназначается смс (для статистики)
+     * @param int $try - попытка (если не первая) метод resend автоматически инкриментирует этот флаг
+     * @param string $ip - ip того, кто отправил сообщение (если не указано, берется автоматически из HTTP_X_FORWARDED_FOR/REMOTE_ADDR)
      * @return bool
-     * @throws \Doctrine\DBAL\Exception
      */
-    public function send($phone, $text, $action='default', $code='', int $id_users=0, int $try=1, string $ip=''){
+    public function send($phone, $text, $action='default', $code='', int $id_users=0, int $try=1, string $ip=''):bool{
 
 
         // Проверяем телефон на корректность, доп условие, надо чтобы он потом в базу в поле на 12 символов поместился
         if ($ip=='') {
             $ip = FuncHelper::GetIP();
         }
-
 
         // $this->config['day_limit_per_ip']
         //$reg_limit_allow = Celib::getInstance('Module:Users')->cache_counter('phone_reg_'.$this->auth4->id, $tries, $time);

@@ -7,7 +7,15 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.1"
+        "php": ">=8.1",
+        "justcommunication/func-bundle": "^0.1",
+        "predis/predis": "^2.1",
+
+        "symfony/http-kernel": ">=5.4 ^6.2",
+        "symfony/config": ">=5.4 ^6.2",
+        "symfony/dependency-injection": ">=5.4 ^6.2",
+
+        "symfony/event-dispatcher": ">=5.4 ^6.2"
     },
     "config": {
         "sort-packages": true
@@ -17,6 +25,12 @@
             "JustCommunication\\SmsAeroBundle\\": "src/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:mihaylo47/func-bundle.git"
+        }
+    ],
     "autoload-dev": {
         "psr-4": {
             "JustCommunication\\SmsAeroBundle\\Tests\\": "tests/"

@@ -6,7 +6,6 @@ namespace JustCommunication\SmsAeroBundle\Service;
  * Собственно хелпер только для того, чтобы было единое место инициализации и использование конфигов.
  */
 use Predis\Client;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class RedisHelper
