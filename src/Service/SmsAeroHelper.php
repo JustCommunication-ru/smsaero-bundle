@@ -53,6 +53,14 @@ class SmsAeroHelper
     }
 
     /**
+     * Включена реальная отправка сообщений
+     * @return bool
+     */
+    public function isActive(){
+        return $this->config['stub']!=true;
+    }
+
+    /**
      * Отправка сообщений
      * @param $phone - полный номер телефона (может начинаться с +7... , 7..., 8...)
      * @param $text - текст сообщения (одна смс - 70кириллицей)
@@ -68,7 +76,7 @@ class SmsAeroHelper
 
         // Проверяем телефон на корректность, доп условие, надо чтобы он потом в базу в поле на 12 символов поместился
         if ($ip=='') {
-            $ip = FuncHelper::GetIP();
+            $ip = FuncHelper::getIP();
         }
 
         // $this->config['day_limit_per_ip']
